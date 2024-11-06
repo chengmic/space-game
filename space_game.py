@@ -1,6 +1,7 @@
 import sys
 import pygame
 from settings import Settings
+from ship import Ship
 
 class SpaceBattle:
     def __init__(self):
@@ -9,6 +10,7 @@ class SpaceBattle:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Space Battle")
+        self.ship = Ship(self)
 
 
 
@@ -21,6 +23,7 @@ class SpaceBattle:
             #rewdraw the screen during each pass through the loop
             self.screen.fill(self.settings.bg_color)
             
+            self.ship.blitme()
             # make most recently drawn screen visible
             pygame.display.flip()
             self.clock.tick(60)
