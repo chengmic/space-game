@@ -22,7 +22,7 @@ class SpaceBattle:
             if event.type == pygame.QUIT:
                 sys.exit()
 
-    def _update_screeen(self):
+    def _update_screen(self):
             self.screen.fill(self.settings.bg_color)
             self.ship.blitme()
             
