@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class SpaceBattle:
     def __init__(self):
@@ -19,7 +20,9 @@ class SpaceBattle:
         
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
 
+        self._create_fleet()
 
     def run_game(self):
         while True:
@@ -59,16 +62,6 @@ class SpaceBattle:
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
-    def _update_screen(self):
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            
-            for bullet in self.bullets.sprites():
-                bullet.draw_bullet()
-
-            # make most recently drawn screen visible
-            pygame.display.flip()
-
     def _fire_bullet(self):
         if len(self.bullets) < self.settings.bullets_allowed:
             #create new bullet
@@ -80,7 +73,34 @@ class SpaceBattle:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <=0:
                 self.bullets.remove(bullet)
-            print(len(self.bullets))
+    
+    def _create_fleet(self):
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        curr_x = alien_width
+
+        while curr_x < (self.settings.screen_width -(1 * alien_width)):
+            self._create_alien(curr_x)
+            curr_x += (2 * alien_width)
+
+    def _create_alien(self, x_pos):
+        new_alien = Alien(self)
+        new_alien.x = x_pos
+        new_alien.rect.x = x_pos
+        self.aliens.add(new_alien)
+
+    def _update_screen(self):
+            self.screen.fill(self.settings.bg_color)
+            self.ship.blitme()
+
+            self.aliens.draw(self.screen)
+            
+            for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
+
+
+            # make most recently drawn screen visible
+            pygame.display.flip()
 
 
 if __name__ == '__main__':
