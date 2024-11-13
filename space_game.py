@@ -71,7 +71,7 @@ class SpaceBattle:
 
     def _update_bullets(self):
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <=0:
+            if bullet.rect.top <=0:
                 self.bullets.remove(bullet)
     
     def _create_fleet(self):
